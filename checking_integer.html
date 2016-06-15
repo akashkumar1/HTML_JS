@@ -1,0 +1,22 @@
+<html>
+<body>
+Enter a number<br>
+<input id="inp1" type="text">
+<button onclick="cal()">Check</button><br>
+<p id="out1"></p>
+
+<script type="text/javascript">
+function checker(a)
+{
+	return (isNaN(Number(a)) || String(Number(a)).indexOf(".")!=-1 )?false:true;
+}
+
+function cal()
+{
+	var r=checker(document.getElementById("inp1").value);
+	(document.getElementById("out1")).innerHTML=r;
+}
+
+</script>
+</body>
+</html>

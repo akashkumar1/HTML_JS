@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<title>Querying Repository</title>
+
+<head>
+<p id="p1">Code Appears here...</p>
+</head>
+
+<body>
+<script>	
+ var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+
+  	console.log("status: " +xhttp.status);
+
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      document.getElementById("p1").innerHTML = xhttp.responseText;
+    }
+    else
+    {
+    	//console.log("failure");
+    	//console.log(xhttp.responseText);
+    }
+  };
+
+  xhttp.open("GET", "https://api.github.com/repos/eigengo/reactive-summit-2016", true);
+  xhttp.send();
+</script>
+</body>	
+
+</html>
