@@ -1,0 +1,177 @@
+	<html>
+<title>Cube26</title>
+	<head>
+		<p>Enter Repository Link</p>
+	</head>
+
+	<body>
+		<input id ="inp1" type="text"><br>
+		<button onclick="fetch()">Fetch</button>
+		<p id="id2"></p>
+		<p id="id3"></p>
+		<p id="id4"></p>
+		<p id="id5"></p>
+		<p id="id6"></p>
+		<script>
+
+		var updated_url="";
+		var flag=Array.apply(null, Array(10000)).map(Number.prototype.valueOf,0);
+		var comment_data=Array.apply(null, Array(10000)).map(String.prototype.valueOf,"");	
+
+		function fetch(){
+			
+		 var url=document.getElementById("inp1").value;
+		 var matcher=new RegExp("((https://github.com)|(http://github.com)|(www.github.com)|(github.com))(/(([a-z]+[0-9]+)|([a-z]*[0-9]+)|([a-z]+[0-9]*))+)+(/(([a-z]+[0-9]+)|([a-z]*[0-9]+)|([a-z]+[0-9]*))+)+","i");
+		  
+		  
+		  if(matcher.test(url) && (url.startsWith("https://github.com") || url.startsWith("http://github.com") || url.startsWith("github.com") || url.startsWith("www.github.com")))
+		  {
+		  	var pos=url.indexOf("github.com/");
+			  var usr="",usr_rep="",f=0;
+			  for(var i=pos+11;i<url.length;i++)
+			  {
+			  		if(f==0 && url[i]!='/')
+			  		{
+			  			usr+=url[i];
+			  		}
+			  		else if(f==0 && url[i]=='/')
+			  		{
+			  			f=1;
+			  		}
+			  		else if(f==1 && url[i]!='/')
+			  		{
+			  			usr_rep+=url[i];
+			  		}
+			  		else if(f==1 && url[i]=='/')
+			  		{
+			  			f=2;
+			  		}
+			  }	
+
+			  updated_url="https://api.github.com/repos/"+usr+"/"+usr_rep+"/"+"issues";				//updated_url is url to users issues api
+		  	document.getElementById("id2").innerHTML="Accessing... " +url;
+		  	console.log("Accessing... " +updated_url);
+
+		  	var xhttp = new XMLHttpRequest();
+		   xhttp.onreadystatechange = function() {
+		    if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+		    	var res = JSON.parse(xhttp.responseText);
+
+		    	var cur_dt= new Date();
+		    	var time1=cur_dt.getTime(); 		//converting todays date into milliseconds
+
+		    	
+
+		    	var c_hr_issues=0,c_dy_issues=0,c_o_issues=0;
+		    	for(var i=0;i<res.length;i++)
+		    	{
+		    		if(res[i].state=="open")
+		    		{
+		    			c_o_issues++;
+		    			var datei=new Date(res[i].created_at);		//converting issue date into milliseconds
+			    		var timei=datei.getTime();
+
+			    		if((time1-timei)<=86400000)
+			    		{
+			    			c_hr_issues++;						//increasing count of issues created in last 24hrs
+			    		}
+
+			    		if((time1-timei)>604800000)
+			    		{
+			    			c_dy_issues++;						//increasing count of issues opened more than 7 days ago
+			    		}
+		    		}
+		    		
+		    	}
+
+		    	document.getElementById("id2").innerHTML = "Total number of issues: " + c_o_issues;
+				document.getElementById("id3").innerHTML = "Total number of issues in last 24 hours: " +c_hr_issues;
+				document.getElementById("id4").innerHTML = "Total number of issues that were opened for more than 7 days: " +c_dy_issues;
+
+
+				
+				//creating buttons dynamically
+
+				for(var i=1;i<=c_o_issues;i++)
+				{
+					var btnid="issues"+i;
+					var btn = document.createElement("BUTTON");
+					btn.setAttribute("type","button");
+					btn.setAttribute("value",btnid);
+					btn.setAttribute("onclick","showdata(this.id)");
+					btn.setAttribute("id",btnid)
+					document.getElementById("id5").appendChild(btn);
+					document.getElementById(btnid).innerHTML=btn.value;
+				}
+					
+				
+		    }
+		    else
+		    {
+		    	console.log("issue xmlhttp request status: " +xhttp.status);
+		    	console.log("issue xmlhttp request state" +xhttp.readyState);
+		    }
+		  };
+
+		  xhttp.open("GET", updated_url, true);
+		  xhttp.send();
+
+		  }
+		  else
+		  {
+		  	document.getElementById("id2").innerHTML="Invaild Repository";	
+		  }
+		  
+		}
+
+		
+		function  showdata(a)
+		{
+			var issid="";
+			for(var j=6;j<a.length;j++)
+			{
+				issid+=a[j];
+			}
+
+			if(flag[Number(issid)] === 1)
+			{
+				console.info("flag=1");
+				document.getElementById("id6").innerHTML=comment_data[Number(issid)];
+			}
+			else
+			{
+				console.info("flag=0");
+				var issue_url=updated_url+"/"+Number(issid)+"/comments"
+				console.info("issueurl: " +issue_url);
+				var xhttp = new XMLHttpRequest();
+			   xhttp.onreadystatechange = function() 
+			   {
+				    if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+				    	var res = JSON.parse(xhttp.responseText);
+				    	var str="Issue"+issid+" comments: "+"<br>";
+				    	for(var i=0;i<res.length;i++)
+				    	{
+				    		str=str+"<br>"+res[i].body;
+				    	}
+
+				    	comment_data[Number(issid)]=str;
+				    	flag[Number(issid)]=1;
+				    	document.getElementById("id6").innerHTML=str;
+				    }
+				    else
+				    {
+				    	console.log("comment xmlhttprequest status" +xhttp.status);
+				    	console.log("comment xmlhttprequest state" +xhttp.readyState);
+				    }
+
+				};
+				xhttp.open("GET", issue_url, true);
+				xhttp.send();
+			}
+		}				
+		
+		</script>
+	</body>	
+</html>
