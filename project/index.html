@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Git Issues</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/clean-blog.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a href="index.html">Home</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('img/git.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h>Enter Repository Link</h>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <center><input class="form-control" id="inp1" type="text"></center>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <center><button class="btn btn-sm btn-primary" onclick="fetch()">Fetch</button></center>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+            <p id="id2"></p>
+            <p id="id3"></p>
+            <p id="id4"></p>
+            </div>
+        </div>
+     </div>   
+
+     
+    <div class="panel-group" id="accordion"></div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <center><h class="copyright text-muted">Copyright &copy; Your Website 2014</h></center>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+        var updated_url="";
+        var flag;
+        var c_hr_issues,c_dy_issues,c_o_issues;
+        //var comment_data=Array.apply(null, Array(10000)).map(String.prototype.valueOf,""); 
+
+        function fetch(){
+         
+            flag=Array.apply(null, Array(10000)).map(Number.prototype.valueOf,0);
+            document.getElementById("id2").innerHTML = "";
+            document.getElementById("id3").innerHTML = "";
+            document.getElementById("id4").innerHTML = "";
+           
+            
+                
+         var url=document.getElementById("inp1").value;
+         var matcher=new RegExp("((https://github.com)|(http://github.com)|(www.github.com)|(github.com))(/(([a-z]+[0-9]+)|([a-z]*[0-9]+)|([a-z]+[0-9]*))+)+(/(([a-z]+[0-9]+)|([a-z]*[0-9]+)|([a-z]+[0-9]*))+)+","i");
+          
+          
+          if(matcher.test(url) && (url.startsWith("https://github.com") || url.startsWith("http://github.com") || url.startsWith("github.com") || url.startsWith("www.github.com")))
+          {
+            var pos=url.indexOf("github.com/");
+              var usr="",usr_rep="",f=0;
+              for(var i=pos+11;i<url.length;i++)
+              {
+                    if(f==0 && url[i]!='/')
+                    {
+                        usr+=url[i];
+                    }
+                    else if(f==0 && url[i]=='/')
+                    {
+                        f=1;
+                    }
+                    else if(f==1 && url[i]!='/')
+                    {
+                        usr_rep+=url[i];
+                    }
+                    else if(f==1 && url[i]=='/')
+                    {
+                        f=2;
+                    }
+              } 
+
+              updated_url="https://api.github.com/repos/"+usr+"/"+usr_rep+"/"+"issues";             //updated_url is url to users issues api
+            document.getElementById("id2").innerHTML="Accessing... " +url;
+            console.log("Accessing... " +updated_url);
+
+            var xhttp = new XMLHttpRequest();
+           xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+                var res = JSON.parse(xhttp.responseText);
+
+                var cur_dt= new Date();
+                var time1=cur_dt.getTime();         //converting todays date into milliseconds
+
+                
+
+                c_hr_issues=0;c_dy_issues=0;c_o_issues=0;
+                for(var i=0;i<res.length;i++)
+                {
+                    if(res[i].state=="open")
+                    {
+                        c_o_issues++;
+                        var datei=new Date(res[i].created_at);      //converting issue date into milliseconds
+                        var timei=datei.getTime();
+
+                        if((time1-timei)<=86400000)
+                        {
+                            c_hr_issues++;                      //increasing count of issues created in last 24hrs
+                        }
+
+                        if((time1-timei)>604800000)
+                        {
+                            c_dy_issues++;                      //increasing count of issues opened more than 7 days ago
+                        }
+                    }
+                    
+                }
+
+                console.info("fetch results: ", res);
+                document.getElementById("id2").innerHTML = "Total number of issues: " + c_o_issues;
+                document.getElementById("id3").innerHTML = "Total number of issues in last 24 hours: " +c_hr_issues;
+                document.getElementById("id4").innerHTML = "Total number of issues that were opened for more than 7 days: " +c_dy_issues;
+
+
+                //creating buttons dynamically & adding them to accordion
+                for(var i=1;i<=c_o_issues;i++)
+                {
+                    var btnid="issues"+i;
+                   var content= "<center><button type="+'button class='+"btn  data-toggle=collapse data-target = " +"#demo"+btnid+" onclick=showdata("+i+")"+">"+res[i-1].title+"</button><br>"+"<div id="+'demo'+btnid +" "+'class='+"collapse></div></center><br>";
+
+                    $("#accordion").append(content);
+                }
+                    
+                
+            }
+            else
+            {
+                console.log("issue xmlhttp request status: " +xhttp.status);
+                console.log("issue xmlhttp request state" +xhttp.readyState);
+            }
+          };
+
+          xhttp.open("GET", updated_url, true);
+          xhttp.send();
+
+          }
+          else
+          {
+            document.getElementById("id2").innerHTML="Invaild Repository";  
+          }
+          
+        }
+
+        
+        function  showdata(a)
+        {
+
+          //  console.log("issue id is: "+a);
+           
+            if(flag[a] === 1)
+            {
+                console.info("flag=1");
+                document.getElementById("demo"+"issues"+Number(a)).innerHTML=sessionStorage.getItem(Number(a));
+            }
+            else
+            {
+                console.info("flag=0");
+                var issue_url=updated_url+"/"+a+"/comments"
+                console.info("issueurl: " +issue_url);
+                var xhttp = new XMLHttpRequest();
+               xhttp.onreadystatechange = function() 
+               {
+                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+                        var res = JSON.parse(xhttp.responseText);
+                        var str="Issue"+Number(a)+" comments: "+"<br>";
+                        for(var i=0;i<res.length;i++)
+                        {
+                            str=str+"<br>"+res[i].body;
+                        }
+
+                        //comment_data[Number(a)]=str;
+                        sessionStorage.setItem(Number(a), str);
+                        flag[a]=1;
+                         document.getElementById("demo"+"issues"+Number(a)).innerHTML=sessionStorage.getItem(Number(a));
+                     }
+                    else
+                    {
+                        console.log("comment xmlhttprequest status" +xhttp.status);
+                        console.log("comment xmlhttprequest state" +xhttp.readyState);
+                    }
+
+                };
+                xhttp.open("GET", issue_url, true);
+                xhttp.send();
+            }
+        }               
+        
+        </script>
+
+<style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    height: 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
