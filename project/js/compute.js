@@ -22,19 +22,19 @@ var updated_url="";
               var usr="",usr_rep="",f=0;
               for(var i=pos+11;i<url.length;i++)
               {
-                    if(f==0 && url[i]!='/')
+                    if(f===0 && url[i]!='/')
                     {
                         usr+=url[i];
                     }
-                    else if(f==0 && url[i]=='/')
+                    else if(f===0 && url[i]==='/')
                     {
                         f=1;
                     }
-                    else if(f==1 && url[i]!='/')
+                    else if(f===1 && url[i]!='/')
                     {
                         usr_rep+=url[i];
                     }
-                    else if(f==1 && url[i]=='/')
+                    else if(f===1 && url[i]==='/')
                     {
                         f=2;
                     }
@@ -46,7 +46,7 @@ var updated_url="";
 
             var xhttp = new XMLHttpRequest();
            xhttp.onreadystatechange = function() {
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
+            if (xhttp.readyState === 4 && xhttp.status === 200) {
 
                 var res = JSON.parse(xhttp.responseText);
 
@@ -58,7 +58,7 @@ var updated_url="";
                 cHrIssues=0;cDyIssues=0;cOIssues=0;
                 for(var i=0;i<res.length;i++)
                 {
-                    if(res[i].state=="open")
+                    if(res[i].state==="open")
                     {
                         cOIssues++;
                         var datei=new Date(res[i].created_at);      //converting issue date into milliseconds
@@ -133,7 +133,7 @@ var updated_url="";
                 var xhttp = new XMLHttpRequest();
                xhttp.onreadystatechange = function() 
                {
-                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    if (xhttp.readyState === 4 && xhttp.status === 200) {
 
                         var res = JSON.parse(xhttp.responseText);
                         var str="";
